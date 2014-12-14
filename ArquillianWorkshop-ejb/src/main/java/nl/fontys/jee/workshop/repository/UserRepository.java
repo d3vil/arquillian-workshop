@@ -3,6 +3,7 @@ package nl.fontys.jee.workshop.repository;
 import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,7 +20,7 @@ import nl.fontys.jee.workshop.model.User;
 @Stateless
 public class UserRepository {
 
-  @PersistenceContext
+  @PersistenceContext(name = "ExampleDS")
   private EntityManager em;
 
   @Inject

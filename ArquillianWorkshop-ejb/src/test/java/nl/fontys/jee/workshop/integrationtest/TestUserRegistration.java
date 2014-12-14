@@ -26,7 +26,7 @@ public class TestUserRegistration {
 
   // TODO
   @Test
-  public void should_inject_registrator() {
+  public void should_inject_repository() {
     assertFalse("Todo", true);
   }
 

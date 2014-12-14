@@ -29,12 +29,10 @@ import org.junit.runner.RunWith;
 public class UserRegistratorTest {
 
   @Deployment
-  public static Archive<?> createTestArchive() {
-    return ShrinkWrap.create(WebArchive.class, "test.war")
-            .addClasses(User.class, UserRegistrator.class ,UserRepository.class)
-            .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-            .addAsWebInfResource("test-ds.xml", "test-ds.xml");
+  public static JavaArchive createTestArchive() {
+    return ShrinkWrap.create(JavaArchive.class)
+            .addClasses(User.class, UserRegistrator.class)
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
   }
 
   @Inject
@@ -48,11 +46,9 @@ public class UserRegistratorTest {
   //TODO
   @Test
   public void should_register_a_user() {
-    User user = new User();
-    user.setUsername("User");
     assertEquals("should return success message",
             "User has been successfully registered",
-            registrator.register(user));
+            registrator.register("User"));
   }
 
 }

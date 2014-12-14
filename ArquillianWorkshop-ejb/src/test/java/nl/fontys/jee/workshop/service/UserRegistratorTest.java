@@ -1,6 +1,7 @@
 package nl.fontys.jee.workshop.service;
 
 import javax.inject.Inject;
+import nl.fontys.jee.workshop.model.User;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -27,7 +28,7 @@ public class UserRegistratorTest {
   @Deployment
   public static JavaArchive createDeployment() {
     return ShrinkWrap.create(JavaArchive.class)
-            .addClass(UserRegistrator.class)
+            .addClasses(UserRegistrator.class, User.class)
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
   }
 
@@ -42,9 +43,11 @@ public class UserRegistratorTest {
   //TODO
   @Test
   public void should_register_a_user() {
+    User newUser = new User();
+    newUser.setUsername("User");
     assertEquals("should return success message",
             "User has been successfully registered",
-            registrator.register("User"));
+            registrator.register(newUser));
   }
 
 }

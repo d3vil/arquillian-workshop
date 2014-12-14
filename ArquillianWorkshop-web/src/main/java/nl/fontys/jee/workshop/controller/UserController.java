@@ -24,7 +24,7 @@ public class UserController {
   private User currentUser;
 
   @Produces
-    @Named
+  @Named
   public User getCurrentUser() {
     return currentUser;
   }
@@ -41,12 +41,6 @@ public class UserController {
     this.registered = registered;
   }
 
-  @Produces
-  @RequestScoped
-  public FacesContext getFacesContext() {
-    return FacesContext.getCurrentInstance();
-  }
-
   @Inject
   private FacesContext facesContext;
 
@@ -54,35 +48,21 @@ public class UserController {
   private UserRepository repository;
 
   @Produces
-  @Named
-  public User getNewUser() {
-    return currentUser;
-  }
-
-  public String register() throws Exception {
-      repository.persist(currentUser);
-      registered = true;
-      facesContext.addMessage(null,
-              new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful"));
-      return "home.xhtml";
+  @RequestScoped
+  public FacesContext getFacesContext() {
+    return FacesContext.getCurrentInstance();
   }
 
   @PostConstruct
-  public void initNewMember() {
+  public void initCurrentUser() {
     currentUser = new User();
   }
 
-  private String getRootErrorMessage(Exception e) {
-    String errorMessage = "Registration failed. See server log for more information";
-    if (e == null) {
-      return errorMessage;
-    }
-
-    Throwable t = e;
-    while (t != null) {
-      errorMessage = t.getLocalizedMessage();
-      t = t.getCause();
-    }
-    return errorMessage;
+  public String register() throws Exception {
+    repository.persist(currentUser);
+    registered = true;
+    facesContext.addMessage(null,
+            new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful"));
+    return "home.xhtml";
   }
 }

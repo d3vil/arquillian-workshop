@@ -6,9 +6,10 @@ import static org.junit.Assert.*;
 /**
  * First test with arquillian.
  * <p>
- * Only tests for:
+ * Tests for:
  * <ul>
  * <li>Context Dependency Injection properly setup.
+ * <li>Registering a user.
  * </ul>
  *
  * @author Sebastiaan Heijmann
@@ -23,6 +24,12 @@ public class UserRegistratorTest {
   // TODO Test if CDI is working.
   @Test
   public void should_inject_a_user_registrator() {
+    assertFalse("todo", true);
+  }
+
+  //TODO
+  @Test
+  public void should_register_a_user() {
     assertFalse("todo", true);
   }
 }

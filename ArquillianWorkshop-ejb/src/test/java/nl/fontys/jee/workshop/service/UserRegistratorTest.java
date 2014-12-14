@@ -31,7 +31,7 @@ public class UserRegistratorTest {
   @Deployment
   public static JavaArchive createTestArchive() {
     return ShrinkWrap.create(JavaArchive.class)
-            .addClasses(User.class, UserRegistrator.class)
+            .addClasses(UserRegistrator.class)
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
   }
 

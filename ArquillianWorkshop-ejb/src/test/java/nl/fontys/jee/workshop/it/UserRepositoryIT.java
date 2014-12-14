@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Integration test for user registration.
+ * Integration test for user repository.
  * <p>
  * Tests for:
  * <ul>

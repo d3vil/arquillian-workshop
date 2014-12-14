@@ -8,7 +8,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import nl.fontys.jee.workshop.model.User;
-import nl.fontys.jee.workshop.repository.UserRepository;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.runner.RunWith;
 import javax.inject.Inject;

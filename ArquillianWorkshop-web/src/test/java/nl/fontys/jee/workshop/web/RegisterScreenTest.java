@@ -7,9 +7,7 @@ import nl.fontys.jee.workshop.arquillian.repository.UserRepository;
 import nl.fontys.jee.workshop.controller.UserController;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.drone.api.annotation.Drone;
-import static org.jboss.arquillian.graphene.Graphene.guardAjax;
 import static org.jboss.arquillian.graphene.Graphene.guardHttp;
-import org.jboss.arquillian.graphene.GrapheneElement;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -24,6 +22,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 /**
+ * Functional test for registering a user.
  *
  * @author Sebastiaan Heijmann
  */
@@ -38,12 +37,11 @@ public class RegisterScreenTest {
             .addClasses(User.class, UserRepository.class, UserController.class)
             .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
             .addAsResource(EmptyAsset.INSTANCE, "META-INF/beans.xml")
+            .addAsWebResource(new File(WEBAPP_SRC, "home.xhtml"))
+            .addAsWebResource(new File(WEBAPP_SRC, "register.xhtml"))
             .addAsWebInfResource(
                     new StringAsset("<faces-config version=\"2.0\"/>"),
-                    "faces-config.xml")
-            .addAsWebResource(new File(WEBAPP_SRC, "home.xhtml"))
-            .addAsWebResource(new File(WEBAPP_SRC, "register.xhtml"));
-//            .addAsWebInfResource("test-ds.xml", "test-ds.xml");
+                    "faces-config.xml");
 
     System.out.println(war.toString(true));
     return war;
@@ -63,7 +61,6 @@ public class RegisterScreenTest {
 
   @FindBy(tagName = "li")
   private WebElement facesMessage;
-
 
   @Test
   public void should_register_user() throws InterruptedException {

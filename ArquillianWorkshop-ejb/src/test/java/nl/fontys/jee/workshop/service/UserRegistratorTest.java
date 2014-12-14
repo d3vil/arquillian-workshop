@@ -1,7 +1,14 @@
 package nl.fontys.jee.workshop.service;
 
+import javax.inject.Inject;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
 
 /**
  * First test with arquillian.
@@ -14,22 +21,30 @@ import static org.junit.Assert.*;
  *
  * @author Sebastiaan Heijmann
  */
+@RunWith(Arquillian.class)
 public class UserRegistratorTest {
 
+  @Deployment
+  public static JavaArchive createDeployment() {
+    return ShrinkWrap.create(JavaArchive.class)
+            .addClass(UserRegistrator.class)
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+  }
 
-  //TODO Create deployment method.
+  @Inject
+  UserRegistrator registrator;
 
-  //TODO Inject UserRegistrator.
-
-  // TODO Test if CDI is working.
   @Test
   public void should_inject_a_user_registrator() {
-    assertFalse("todo", true);
+    assertNotNull("should inject a UserRegistrator instance", registrator);
   }
 
   //TODO
   @Test
   public void should_register_a_user() {
-    assertFalse("todo", true);
+    assertEquals("should return success message",
+            "User has been successfully registered",
+            registrator.register("User"));
   }
+
 }

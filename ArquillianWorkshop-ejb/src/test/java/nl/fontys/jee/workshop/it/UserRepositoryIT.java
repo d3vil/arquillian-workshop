@@ -8,10 +8,10 @@ import static org.junit.Assert.*;
  * <p>
  * Tests for:
  * <ul>
- * <li>Persisting a {@link nl.fontys.jee.workshop.arquillian.model.User}.
- * <li>Finding a {@link nl.fontys.jee.workshop.arquillian.model.User} by id.
- * <li>Finding a {@link nl.fontys.jee.workshop.arquillian.model.User} by
- * username.
+ * <li>Proper injection of UserRepository.
+ * <li>Persisting a User.
+ * <li>Finding a User by id.
+ * <li>Finding a User by username.
  * </ul>
  *
  * @author Sebastiaan Heijmann
@@ -26,14 +26,19 @@ public class UserRepositoryIT {
 
   // TODO
   @Test
-  public void should_register_user() {
+  public void should_persist_user() {
     assertFalse("Todo", true);
   }
 
   // TODO
   @Test
-  public void should_not_persist_user_when_username_exists() {
+  public void should_find_user_by_id() {
     assertFalse("Todo", true);
   }
 
+  // TODO
+  @Test
+  public void should_find_user_by_username() {
+    assertFalse("Todo", true);
+  }
 }

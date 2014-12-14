@@ -1,4 +1,4 @@
-package nl.fontys.jee.workshop.web;
+ package nl.fontys.jee.workshop.web;
 
 import java.io.File;
 import java.net.URL;
@@ -57,7 +57,7 @@ public class RegisterScreenTest {
   private WebElement username;
 
   @FindBy(id = "register")
-  private WebElement loginButton;
+  private WebElement registerButton;
 
   @FindBy(tagName = "li")
   private WebElement facesMessage;
@@ -67,7 +67,7 @@ public class RegisterScreenTest {
     browser.get(deploymentUrl.toExternalForm() + "register.jsf");
 
     username.sendKeys("user");
-    guardHttp(loginButton).click();
+    registerButton.click();
     assertEquals("Registered!", facesMessage.getText().trim());
 
   }

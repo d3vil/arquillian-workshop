@@ -60,19 +60,11 @@ public class UserController {
   }
 
   public String register() throws Exception {
-    try {
       repository.persist(currentUser);
       registered = true;
       facesContext.addMessage(null,
               new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful"));
       return "home.xhtml";
-
-    } catch (Exception e) {
-      String errorMessage = getRootErrorMessage(e);
-      FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Registration Unsuccessful");
-      facesContext.addMessage(null, m);
-      return null;
-    }
   }
 
   @PostConstruct

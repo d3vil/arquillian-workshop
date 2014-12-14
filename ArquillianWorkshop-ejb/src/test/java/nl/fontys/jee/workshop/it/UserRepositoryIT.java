@@ -1,4 +1,4 @@
-package nl.fontys.jee.workshop.integrationtest;
+package nl.fontys.jee.workshop.it;
 
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
  *
  * @author Sebastiaan Heijmann
  */
-public class TestUserRegistration {
+public class UserRepositoryIT {
 
   // TODO
   @Test

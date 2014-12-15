@@ -1,0 +1,182 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+\usepackage{hyperref}
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{
+\normalfont \normalsize
+\textsc{Arquillian Workshop} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Testing JEE with Arquillian\\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Sebastiaan Heijmann} % Your name
+
+\begin{document}
+
+\maketitle % Print the title
+
+\tableofcontents
+
+\section{Prequisites}
+For this workshop you need the following tools:
+\begin{itemize}
+		\item IDE (Netbeans preferred)
+		\item WildFly application server
+		\item Git
+\end{itemize}
+
+\section{Introduction}
+Once you have installed all the prequisites and cloned the project from Github
+you can see that there are 6 branches created (git branch -a). Every step in
+this tutorial has an uncompleted and completed branch so you can check if the
+implementation you wrote resembles the solution given.
+\par
+For further information about the Arquillian framework you can visit the
+following links:
+\begin{itemize}
+	\item \url{http://arquillian.org/guides/getting_started/}
+	\item \url{https://github.com/arquillian/arquillian-core}
+\end{itemize}
+\par
+The project itself consists of 4 modules namely the parent, an EAR module, an EJB
+module and a WAR module.
+\begin{itemize}
+		\item parent - responsible for managing shared dependencies.
+		\item EAR - used to package and deploy the application.
+		\item EJB - contains our JavaBeans.
+		\item WAR - the web module containing the client code.
+\end{itemize}
+We will be writing tests for the EJB and WAR module so if you are ready to go do
+a "git checkout -f STEP1" to begin implementing your first Arquillian test.
+
+\section{Basic Arquillian test}
+At this point we have a very simple class named UserRegistrator which does not
+much but for the first test it is sufficient. The testclass skeleton is already
+created and now it is up to you to further implement this test.
+\par
+Every Arquillian test needs a couple things namely:
+\begin{itemize}
+	\item Instruct the testclass to use the Arquillian JUnitRunner
+		(\url{http://junit.sourceforge.net/javadoc/org/junit/runner/RunWith.html})
+	\item Implement a static createDeployment method and annotate it with
+		@Deployment. (this method creates your JavaArchive which is deployed in the
+		container)
+	\item Any number of test cases annotated with @Test
+\end{itemize}
+
+The createDeployment method is better to understand if you know what it should do
+(bundling the resources our tests need so it can be deployed in WildFly).
+For this test it is sufficient if we create a JavaArchive using ShrinkWrap's create
+method which needs a parameter of the type of archive we want to create in this case
+a JavaArchive (JAR).
+\par
+To this archive we can now add all our resources we will need for the tests. In
+this case we need to add our class which we are going to test and a
+ManifestResource with: a source (an instance of EmptyAsset), a target (beans.xml)
+\par
+We can give in a EmptyAsset.instance because JPA3 does noet care about the beans.xml
+so it can be empty.
+\par
+If you managed to implement the two tests and want to compare the result you can do
+a "git checkout -f STEP1\_solution".
+
+\section{Integration test}
+Please perform a "git checkout -f STEP2" to start the next use case.
+\par
+The project now has some more beans namely a User and a UserRepository. We will
+leave the implementation of the UserRegistrator as it is and continue with a real
+integration test between our datasource, our User entity and the UserRepository.
+\par
+The UserRepositoryIT class is the integration test which tests if JPA and our
+repository is correctly working. For this we need a different deployment than in
+the previous assignment because we are now using some JEE goodies which need a
+WebArchive to be deployed from.
+\par
+Add the following resources to the Archive:
+\begin{itemize}
+	\item Add a normal resource with source META-INF/test-persistence.xml and
+		target META-INF/persistence.xml
+  \item Add an empty webinf resource named beans.xml
+\end{itemize}
+When you have succesfully created the Archive start implementing the given test
+methods. If you're encountering problems with creating the archive you can use
+its toString method to print the contents to the console.
+\par
+If you managed to implement the tests and want to compare the result you can do
+a "git checkout -f STEP2\_solution".
+
+\section{Functional test}
+Please perform a "git checkout -f STEP3" to start the next use case.
+\par
+The previous assignments where all about testing inside the container, testing on
+the server. The following test will be completely testing the client code. This
+is possible because Arquillian can run in 3 modes as explained in the presentation.
+\par
+In our WAR module we now have 2 JSF pages, a UserController and a testclass. The
+pages are as simplistic as possible which makes it easier to understand the
+testcase.
+\par
+What the views do is the following:
+\begin{itemize}
+	\item You visit the register page
+	\item Fill in you username
+	\item Click on register
+	\item You are Redirected to the home page
+	\item Which displays a message to you.
+\end{itemize}
+In our testcase we capture the elements we need from the DOM using WebElement
+instances and we use a WebDriver to browse throught pages.
+\par
+Important is again the deployment of your archive which must contain all the
+required resources to be able to deploy the application. Therefor perform the
+following steps:
+\begin{itemize}
+	\item Add a normal resource with source META-INF/test-persistence.xml and
+		target META-INF/persistence.xml
+	\item add a resource empty beans.xml
+	\item add the web pages as a web resource create 2 new files named:\\
+		- WEBAPP\_SRC + "home.xhtml"\\
+		- WEBAPP\_SRC + "register.xhtml"\\
+		Name the respectively "home.xhtml" and "register.xhtml".
+	\item add faces config by adding a webinf resource with source "new StringAsset("<faces-config version=\"2.0\"/>")"
+		 and target: faces-config.xml
+	\item Make the deployment method: testable = false
+\end{itemize}
+
+We are now ready to inject the browser and WebElements we need into our testcase.
+For this you will need to:
+\begin{itemize}
+		\item  Inject a WebDriver by annotating the WebDriver with @Drone
+		\item Inject a WebElement for the inputfield by annotating the element
+			with @FindBy.
+		\item Do the same for the registration button.
+		\item And the same for the JSF message bar which can be found by the
+			tagname: "li" instead of finding by css.
+\end{itemize}
+
+If everythin went ok we now have a browser from which we can browse from
+the deploymentUrl to an externalForm named "register.jsf"
+\par
+From here we can input a username and click on the button and we should now see
+a message which is displayed in our JSF message bar.
+\par
+If you managed to implement the two tests and want to compare the result you can do
+a "git checkout -f STEP3\_solution".\\
+
+\textbf{Congratulations with finishing this workshop} Hopefully you have gained a
+basic knowledge about Arquillian and what is possible with it.
+
+\end{document}
